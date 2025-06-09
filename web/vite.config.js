@@ -1,6 +1,6 @@
-import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 
