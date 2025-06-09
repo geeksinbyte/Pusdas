@@ -11,8 +11,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: true,
-
+      strategies: "generateSW",
       pwaAssets: {
         disabled: false,
         config: true,
@@ -32,7 +31,7 @@ export default defineConfig({
       },
 
       devOptions: {
-        enabled: false,
+        enabled: true,
         navigateFallback: "index.html",
         suppressWarnings: true,
         type: "module",
