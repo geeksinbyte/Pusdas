@@ -12,7 +12,7 @@ import TableMember from "@/components/Dashboard/Table/TableMember.vue";
     <h1 class="text-4xl font-semibold text-primary">Admin</h1>
   </div>
   <h2 class="text-xl font-medium mb-8">Jan 12, 2025 | Kamis, 22:12</h2>
-  <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
     <StatsMember />
     <StatsLoan />
     <StatsOverdue />
