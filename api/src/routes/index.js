@@ -14,11 +14,11 @@ router.get("/", (req, res) => {
 });
 
 // Daftarkan semua routes
-router.use("/api/v1/auth", authRoutes);
-router.use("/api/v1/users", userRoutes);
-router.use("/api/v1/books", bookRoutes);
-router.use("/api/v1/loans", loanRoutes);
-router.use("/api/v1/returns", returnRoutes);
-router.use("/api/v1/categories", categoryRoutes);
+router.use("/v1/auth", authRoutes);
+router.use("/v1/users", userRoutes);
+router.use("/v1/books", bookRoutes);
+router.use("/v1/loans", loanRoutes);
+router.use("/v1/returns", returnRoutes);
+router.use("/v1/categories", categoryRoutes);
 
 export default router;

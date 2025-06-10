@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { getAllUsers } from "../controllers/userController.js"; // Import userController if needed
+import { getAllUsers, createUser } from "../controllers/userController.js"; // Import userController if needed
 const router = Router();
 
 // Contoh endpoint
-router.post("/", getAllUsers);
+router.get("/", getAllUsers);
+router.post("/", createUser);
 
 export default router;

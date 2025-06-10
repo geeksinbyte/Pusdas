@@ -21,7 +21,7 @@ enum FormatBuku {
 
 model Anggota {
   id           Int      @id @default(autoincrement())
-  password        String   @db.VarChar(255)
+  sandi        String   @db.VarChar(255)
   nama         String
   jenisKelamin String   @db.VarChar(10)
   peran        Peran    @default(siswa)
