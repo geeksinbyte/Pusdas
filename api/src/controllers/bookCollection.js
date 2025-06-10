@@ -1,16 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+/**
+ * Ambil semua data buku beserta totalnya
+ */
 export async function getAllBooks(req, res) {
   try {
     const books = await prisma.buku.findMany();
     const total = await prisma.buku.count();
     res.json({ total, books });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal mengambil data buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
+/**
+ * Ambil detail buku berdasarkan ID
+ */
 export async function getBookById(req, res) {
   const { id } = req.params;
   try {
@@ -18,14 +25,18 @@ export async function getBookById(req, res) {
       where: { id: parseInt(id, 10) },
     });
     if (!book) {
-      return res.status(404).json({ error: "Book not found" });
+      return res.status(404).json({ error: "Buku tidak ditemukan" });
     }
     res.json(book);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal mengambil detail buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
+/**
+ * Tambah data buku baru
+ */
 export async function addBook(req, res) {
   const {
     judul,
@@ -68,10 +79,14 @@ export async function addBook(req, res) {
     });
     res.status(201).json(newBook);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal menambah buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
+/**
+ * Update data buku berdasarkan ID
+ */
 export async function updateBook(req, res) {
   const { id } = req.params;
   const {
@@ -103,7 +118,7 @@ export async function updateBook(req, res) {
         format,
         urlFile,
         urlSampul,
-        // Untuk update kategori, biasanya harus hapus lalu tambah relasi, contoh:
+        // Untuk update kategori, hapus relasi lama lalu tambahkan yang baru
         ...(kategoriIds && Array.isArray(kategoriIds)
           ? {
               kategori: {
@@ -119,10 +134,14 @@ export async function updateBook(req, res) {
     });
     res.json(updatedBook);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal memperbarui data buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
+/**
+ * Hapus data buku berdasarkan ID
+ */
 export async function deleteBook(req, res) {
   const { id } = req.params;
   try {
@@ -131,10 +150,14 @@ export async function deleteBook(req, res) {
     });
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal menghapus buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
+/**
+ * Cari buku berdasarkan query (judul, penulis, penerbit)
+ */
 export async function searchBooks(req, res) {
   const { query } = req.query;
   try {
@@ -149,6 +172,7 @@ export async function searchBooks(req, res) {
     });
     res.json(books);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Gagal mencari buku:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }

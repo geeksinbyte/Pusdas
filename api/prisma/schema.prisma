@@ -19,6 +19,12 @@ enum FormatBuku {
   ebook
 }
 
+enum StatusPeminjaman {
+  dipinjam
+  dikembalikan
+  terlambat
+}
+
 model Anggota {
   id           Int      @id @default(autoincrement())
   sandi        String   @db.VarChar(255)
@@ -94,6 +100,7 @@ model PeminjamanBuku {
   tglJatuhTempo DateTime
   tglKembali  DateTime?
   denda       Float? @default(0)
+  status      StatusPeminjaman @default(dipinjam)
   buku        Buku     @relation(fields: [bukuId], references: [id])
   anggota     Anggota  @relation(fields: [anggotaId], references: [id])
 

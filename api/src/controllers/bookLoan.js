@@ -11,8 +11,8 @@ export async function getAllLoans(req, res) {
     });
     res.json(loans);
   } catch (error) {
-    console.error("Error fetching loans:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Gagal mengambil data peminjaman:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
@@ -29,13 +29,13 @@ export async function getLoanById(req, res) {
     });
 
     if (!loan) {
-      return res.status(404).json({ error: "Loan not found" });
+      return res.status(404).json({ error: "Data peminjaman tidak ditemukan" });
     }
 
     res.json(loan);
   } catch (error) {
-    console.error("Error fetching loan:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Gagal mengambil data peminjaman:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
@@ -44,8 +44,14 @@ export async function createLoan(req, res) {
 
   try {
     const result = await prisma.$transaction(async (tx) => {
+      // Cek stok buku
+      const book = await tx.buku.findUnique({ where: { id: bukuId } });
+      if (!book || book.jumlahTersedia < 1) {
+        throw new Error("Stok buku tidak tersedia");
+      }
+
       // Kurangi jumlahTersedia buku
-      const updatedBook = await tx.buku.update({
+      await tx.buku.update({
         where: { id: bukuId },
         data: { jumlahTersedia: { decrement: 1 } },
       });
@@ -57,6 +63,7 @@ export async function createLoan(req, res) {
           buku: { connect: { id: bukuId } },
           tglPinjam: tglPinjam ? new Date(tglPinjam) : undefined,
           tglJatuhTempo: tglJatuhTempo ? new Date(tglJatuhTempo) : undefined,
+          status: "dipinjam",
         },
         include: {
           buku: true,
@@ -69,8 +76,11 @@ export async function createLoan(req, res) {
 
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error creating loan:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Gagal membuat data peminjaman:", error);
+    if (error.message === "Stok buku tidak tersedia") {
+      return res.status(400).json({ error: "Stok buku tidak tersedia" });
+    }
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
 
@@ -94,7 +104,7 @@ export async function updateLoan(req, res) {
     });
     res.json(updatedLoan);
   } catch (error) {
-    console.error("Error updating loan:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Gagal memperbarui data peminjaman:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }

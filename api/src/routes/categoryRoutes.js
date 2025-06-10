@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { getCategories } from "../controllers/bookCategory.js";
+
 const router = Router();
 
-// Contoh endpoint
-router.get("/", (req, res) => {
-  res.json({ message: "Get all categories endpoint" });
-});
+router.get("/", getCategories);
 
 export default router;

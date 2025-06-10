@@ -4,7 +4,7 @@ import {
   getLoanById,
   createLoan,
   updateLoan,
-} from "../controllers/loanController.js";
+} from "../controllers/bookLoan.js";
 
 const router = Router();
 
