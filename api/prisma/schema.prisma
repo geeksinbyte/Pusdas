@@ -8,8 +8,95 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
+enum Peran {
+  siswa
+  guru
+  pustakawan
+}
+
+enum FormatBuku {
+  hardcopy
+  ebook
+}
+
+model Anggota {
+  id           Int      @id @default(autoincrement())
+  password        String   @db.VarChar(255)
+  nama         String
+  jenisKelamin String   @db.VarChar(10)
+  peran        Peran    @default(siswa)
+  tglDaftar    DateTime @default(now())
+
+  siswa        Siswa?
+  guru         Guru?
+  pustakawan   Pustakawan?
+  peminjaman   PeminjamanBuku[]
+}
+
+model Siswa {
+  id      Int    @id
+  nis     String @unique @db.VarChar(20)
+  kelas   String @db.VarChar(20)
+  anggota Anggota @relation(fields: [id], references: [id])
+}
+
+model Guru {
+  id      Int    @id
+  nip     String @unique @db.VarChar(20)
+  mapel   String @db.VarChar(50)
+  anggota Anggota @relation(fields: [id], references: [id])
+}
+
+model Pustakawan {
+  id        Int    @id
+  kodeStaf  String @unique @db.VarChar(20)
+  anggota   Anggota @relation(fields: [id], references: [id])
+}
+
+model Kategori {
+  ddc   String   @id @db.VarChar(20)
+  nama  String   @unique @db.VarChar(100)
+  buku  KategoriBuku[]
+}
+
+model KategoriBuku {
+  bukuId     Int
+  kategoriId String
+  buku       Buku      @relation(fields: [bukuId], references: [id])
+  kategori   Kategori  @relation(fields: [kategoriId], references: [ddc])
+
+  @@id([bukuId, kategoriId])
+}
+
+model Buku {
+  id              Int            @id @default(autoincrement())
+  judul           String         @db.VarChar(255)
+  penulis         String         @db.VarChar(100)
+  penerbit        String         @db.VarChar(100)
+  tglTerbit       DateTime
+  kategori        KategoriBuku[]
+  isbn            String         @unique @db.VarChar(20)
+  rak             String         @db.VarChar(50)
+  jumlah          Int            @default(0)
+  jumlahTersedia  Int            @default(0)
+  format          FormatBuku     @default(hardcopy)
+  urlFile         String?        @db.VarChar(255)
+  urlSampul       String?        @db.VarChar(255)
+  tglInput        DateTime       @default(now())
+  peminjaman      PeminjamanBuku[]
+}
+
+model PeminjamanBuku {
+  id          Int      @id @default(autoincrement())
+  bukuId      Int
+  anggotaId   Int
+  tglPinjam   DateTime @default(now())
+  tglJatuhTempo DateTime
+  tglKembali  DateTime?
+  denda       Float? @default(0)
+  buku        Buku     @relation(fields: [bukuId], references: [id])
+  anggota     Anggota  @relation(fields: [anggotaId], references: [id])
+
+  @@index([bukuId])
+  @@index([anggotaId])
 }
