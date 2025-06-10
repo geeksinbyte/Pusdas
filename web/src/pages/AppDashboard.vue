@@ -3,6 +3,16 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { RouterView } from "vue-router";
 import AppSidebar from "@/components/AppSidebar.vue";
 import AppNavbar from "@/components/AppNavbar.vue";
+import { useMemberStore } from "@/stores/memberStore";
+import { useBookStore } from "@/stores/bookStore";
+import { onMounted } from "vue";
+const memberStore = useMemberStore();
+const bookStore = useBookStore();
+
+onMounted(() => {
+  memberStore.fetchMembers();
+  bookStore.fetchBooks();
+});
 </script>
 
 <template>

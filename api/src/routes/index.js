@@ -18,7 +18,7 @@ router.use("/v1/auth", authRoutes);
 router.use("/v1/users", userRoutes);
 router.use("/v1/books", bookRoutes);
 router.use("/v1/loans", loanRoutes);
-router.use("/v1/returns", returnRoutes);
+router.use("/v1/return", returnRoutes);
 router.use("/v1/categories", categoryRoutes);
 
 export default router;

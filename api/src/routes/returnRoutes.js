@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { returnBook } from "../controllers/returnController.js";
+
 const router = Router();
 
-// Contoh endpoint
-router.post("/", (req, res) => {
-  res.json({ message: "Return book endpoint" });
-});
+router.post("/", returnBook);
 
 export default router;

@@ -9,49 +9,15 @@ import {
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowPathIcon } from "@heroicons/vue/16/solid";
-import { ref, onMounted, watch } from "vue";
-import axios from "axios";
 import Skeleton from "@/components/ui/skeleton/Skeleton.vue";
+import { useMemberStore } from "@/stores/memberStore";
+import { computed } from "vue";
 
-const members = ref([]);
-const loading = ref(true);
-const baseURL = import.meta.env.VITE_API_URL;
+const memberStore = useMemberStore();
+const members = computed(() => memberStore.members);
 
-// Ambil dari cache saat mounted
-onMounted(async () => {
-  const cached = localStorage.getItem("members");
-  if (cached) {
-    members.value = JSON.parse(cached);
-    loading.value = false;
-  } else {
-    loading.value = true;
-    try {
-      const res = await axios.get(baseURL + "/v1/users");
-      members.value = res.data;
-    } catch (err) {
-      members.value = [];
-    } finally {
-      loading.value = false;
-    }
-  }
-});
-
-// Simpan ke cache setiap kali members berubah
-watch(members, (val) => {
-  localStorage.setItem("members", JSON.stringify(val));
-});
-
-async function syncMembers() {
-  loading.value = true;
-  try {
-    const res = await axios.get(baseURL + "/v1/users");
-    members.value = res.data;
-    localStorage.setItem("members", JSON.stringify(res.data));
-  } catch (err) {
-    members.value = [];
-  } finally {
-    loading.value = false;
-  }
+function syncMembers() {
+  memberStore.fetchMembers();
 }
 </script>
 
@@ -59,7 +25,11 @@ async function syncMembers() {
   <Card class="col-span-2 bg-white border-none w-full relative drop-shadow-xl">
     <CardHeader class="px-4 flex items-center justify-between">
       <h2 class="text-lg">Daftar Anggota</h2>
-      <Button @click="syncMembers" :disabled="loading" variant="ghost">
+      <Button
+        @click="syncMembers"
+        :disabled="memberStore.loading"
+        variant="ghost"
+      >
         <ArrowPathIcon />
       </Button>
     </CardHeader>
@@ -77,7 +47,7 @@ async function syncMembers() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="loading">
+          <template v-if="memberStore.loading">
             <TableRow v-for="i in 3" :key="i">
               <TableCell><Skeleton class="h-4 min-w-full" /></TableCell>
               <TableCell><Skeleton class="h-4 min-w-full" /></TableCell>

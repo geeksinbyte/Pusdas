@@ -4,7 +4,8 @@ const prisma = new PrismaClient();
 export async function getAllBooks(req, res) {
   try {
     const books = await prisma.buku.findMany();
-    res.json(books);
+    const total = await prisma.buku.count();
+    res.json({ total, books });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

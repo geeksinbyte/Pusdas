@@ -13,7 +13,8 @@ export async function getAllUsers(req, res) {
         tglDaftar: true,
       },
     });
-    res.json(users);
+    const total = await prisma.anggota.count();
+    res.json({ total, users });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
