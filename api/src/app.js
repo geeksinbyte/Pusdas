@@ -1,9 +1,17 @@
 import express from "express";
-import routes from "./routes/exampleRoutes.js";
+import morgan from "morgan";
+import routes from "./routes/index.js";
 
 const app = express();
 
+// Logging
+app.use(morgan("combined"));
+
+// Body parsing
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/api", routes);
+
+// Routes
+app.use(routes);
 
 export default app;
