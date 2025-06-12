@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
 import { useAuthStore } from "@/stores/authStore";
+import { toast } from "vue-sonner";
 
 import {
   FormControl,
@@ -38,12 +39,22 @@ const onSubmit = handleSubmit(async (values) => {
   });
   if (!success) {
     if (authStore.error?.includes("tidak ditemukan")) {
-      alert("ID tidak ditemukan");
+      toast.error("ID tidak ditemukan", {
+        style: { background: "#f4212e", color: "#fff" },
+      });
     } else if (authStore.error?.includes("Sandi salah")) {
-      alert("Password salah");
+      toast.error("Password salah", {
+        style: { background: "#f4212e", color: "#fff" },
+      });
     } else {
-      alert(authStore.error || "Terjadi kesalahan, silakan coba lagi nanti.");
+      toast.error("Terjadi kesalahan: Internal server error 500", {
+        style: { background: "#f4212e", color: "#fff" },
+      });
     }
+  } else {
+    toast.success("Berhasil Login", {
+      style: { background: "#17bf63", color: "#fff" },
+    });
   }
 });
 </script>

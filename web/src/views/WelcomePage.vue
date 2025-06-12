@@ -1,4 +1,5 @@
 <script setup>
+import { useAuthStore } from "../stores/authStore";
 import { useDeviceStore } from "@/stores/useDeviceStore";
 import LoginForm from "@/components/LoginForm.vue";
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/card";
 
 const device = useDeviceStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -48,7 +50,9 @@ const device = useDeviceStore();
         <LoginForm />
       </CardContent>
       <CardFooter>
-        <Button class="w-full" variant="secondary">Daftar Anggota</Button>
+        <Button class="w-full" variant="secondary" :disabled="authStore.loading"
+          >Daftar Anggota</Button
+        >
       </CardFooter>
     </Card>
 

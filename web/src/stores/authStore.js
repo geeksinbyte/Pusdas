@@ -36,7 +36,9 @@ export const useAuthStore = defineStore("auth", () => {
       });
       setToken(res.data.token);
       setUser(res.data.anggota);
+
       router.push("/dashboard");
+
       return true;
     } catch (err) {
       error.value = err.response?.data?.error || "Login gagal";
