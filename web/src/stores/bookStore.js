@@ -21,7 +21,12 @@ export const useBookStore = defineStore("book", () => {
     loading.value = true;
     try {
       const baseURL = import.meta.env.VITE_API_URL;
-      const res = await axios.get(baseURL + "/v1/books");
+      const token = localStorage.getItem("token");
+      const res = await axios.get(baseURL + "/v1/books", {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
       setBooks(res.data); // asumsi response { total, books }
       localStorage.setItem("books", JSON.stringify(res.data.books));
     } catch (err) {

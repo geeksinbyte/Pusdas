@@ -22,7 +22,12 @@ export const useMemberStore = defineStore("member", () => {
     loading.value = true;
     try {
       const baseURL = import.meta.env.VITE_API_URL;
-      const res = await axios.get(baseURL + "/v1/users");
+      const token = localStorage.getItem("token");
+      const res = await axios.get(baseURL + "/v1/users", {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
       setMembers(res.data);
       localStorage.setItem("members", JSON.stringify(res.data.users));
     } catch (err) {

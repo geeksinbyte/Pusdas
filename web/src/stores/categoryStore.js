@@ -24,7 +24,12 @@ export const useCategoryStore = defineStore("category", () => {
     loading.value = true;
     try {
       const baseURL = import.meta.env.VITE_API_URL;
-      const res = await axios.get(baseURL + "/v1/categories");
+      const token = localStorage.getItem("token");
+      const res = await axios.get(baseURL + "/v1/categories", {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
       setCategories(res.data); // asumsi response adalah array kategori
       localStorage.setItem("categories", JSON.stringify(res.data));
     } catch (err) {
