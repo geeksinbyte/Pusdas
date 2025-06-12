@@ -4,7 +4,7 @@ import { Toaster } from "vue-sonner";
 import "vue-sonner/style.css";
 </script>
 <template>
-  <Toaster class="fixed z-50" />
+  <Toaster />
   <RouterView v-slot="{ Component }">
     <transition
       enter-active-class="duration-500 ease-in-out"

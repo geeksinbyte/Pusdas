@@ -40,20 +40,36 @@ const onSubmit = handleSubmit(async (values) => {
   if (!success) {
     if (authStore.error?.includes("tidak ditemukan")) {
       toast.error("ID tidak ditemukan", {
-        style: { background: "#f4212e", color: "#fff" },
+        style: {
+          background: "#f4212e",
+          color: "#fff",
+          fontFamily: "'Poppins', sans-serif",
+        },
       });
     } else if (authStore.error?.includes("Sandi salah")) {
       toast.error("Password salah", {
-        style: { background: "#f4212e", color: "#fff" },
+        style: {
+          background: "#f4212e",
+          color: "#fff",
+          fontFamily: "'Poppins', sans-serif",
+        },
       });
     } else {
       toast.error("Terjadi kesalahan: Internal server error 500", {
-        style: { background: "#f4212e", color: "#fff" },
+        style: {
+          background: "#f4212e",
+          color: "#fff",
+          fontFamily: "'Poppins', sans-serif",
+        },
       });
     }
   } else {
     toast.success("Berhasil Login", {
-      style: { background: "#17bf63", color: "#fff" },
+      style: {
+        background: "#17bf63",
+        color: "#fff",
+        fontFamily: "'Poppins', sans-serif",
+      },
     });
   }
 });
