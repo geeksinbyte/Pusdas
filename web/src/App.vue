@@ -5,5 +5,16 @@ import "vue-sonner/style.css";
 </script>
 <template>
   <Toaster class="fixed z-50" />
-  <RouterView />
+  <RouterView v-slot="{ Component }">
+    <transition
+      enter-active-class="duration-500 ease-in-out"
+      enter-from-class="transform opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="duration-500 ease-in-out"
+      leave-from-class="opacity-100"
+      leave-to-class="transform opacity-0"
+    >
+      <component :is="Component" />
+    </transition>
+  </RouterView>
 </template>
