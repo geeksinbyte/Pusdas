@@ -5,8 +5,7 @@ import { vAutoAnimate } from "@formkit/auto-animate/vue";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
 
 import {
   FormControl,
@@ -30,27 +29,20 @@ const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: formSchema,
 });
 
-const baseUrl = import.meta.env.VITE_API_URL;
-
-const router = useRouter();
+const authStore = useAuthStore();
 
 const onSubmit = handleSubmit(async (values) => {
-  try {
-    const res = await axios.post(baseUrl + "/v1/auth/login", {
-      id: values.id,
-      password: values.password,
-    });
-    if (res.status === 200 && res.data.token) {
-      localStorage.setItem("token", res.data.token);
-      router.push("/dashboard");
-    }
-  } catch (error) {
-    if (error.response && error.response.status === 404) {
+  const success = await authStore.login({
+    id: values.id,
+    password: values.password,
+  });
+  if (!success) {
+    if (authStore.error?.includes("tidak ditemukan")) {
       alert("ID tidak ditemukan");
-    } else if (error.response && error.response.status === 401) {
+    } else if (authStore.error?.includes("Sandi salah")) {
       alert("Password salah");
     } else {
-      alert("Terjadi kesalahan, silakan coba lagi nanti.");
+      alert(authStore.error || "Terjadi kesalahan, silakan coba lagi nanti.");
     }
   }
 });
@@ -92,6 +84,8 @@ const onSubmit = handleSubmit(async (values) => {
         <FormMessage />
       </FormItem>
     </FormField>
-    <Button type="submit" class="w-full"> Masuk </Button>
+    <Button type="submit" class="w-full" :disabled="authStore.loading">
+      Masuk
+    </Button>
   </form>
 </template>

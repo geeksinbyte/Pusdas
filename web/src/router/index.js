@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
   {
@@ -45,20 +46,25 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const baseURL = import.meta.env.VITE_API_URL; // Ganti dengan URL API Anda
-  const token = localStorage.getItem("token");
+  const authStore = useAuthStore();
+  const token = authStore.token;
+  const user = authStore.user;
 
   // Jika user sudah punya token dan menuju halaman root, redirect ke dashboard
   if (to.path === "/" && token) {
-    try {
-      await axios.get(baseURL + "/v1/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    // Jika user belum di-load, fetch profile dulu
+    if (!user) {
+      try {
+        await authStore.fetchProfile();
+        if (authStore.user) {
+          return next({ path: "/dashboard" });
+        }
+      } catch (err) {
+        authStore.logout();
+        return next();
+      }
+    } else {
       return next({ path: "/dashboard" });
-    } catch (err) {
-      // Jika token tidak valid, hapus token dan lanjut ke halaman /
-      localStorage.removeItem("token");
-      return next();
     }
   }
 
@@ -66,17 +72,20 @@ router.beforeEach(async (to, from, next) => {
   if (to.path.startsWith("/dashboard") && !token) {
     return next({ path: "/" });
   } else if (to.path.startsWith("/dashboard") && token) {
-    // Verifikasi token ke API
-    try {
-      await axios.get(baseURL + "/v1/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return next();
-    } catch (err) {
-      // Jika token tidak valid, hapus token dan redirect ke /
-      localStorage.removeItem("token");
-      return next({ path: "/" });
+    // Jika user belum di-load, fetch profile dulu
+    if (!user) {
+      try {
+        await authStore.fetchProfile();
+        if (!authStore.user) {
+          authStore.logout();
+          return next({ path: "/" });
+        }
+      } catch (err) {
+        authStore.logout();
+        return next({ path: "/" });
+      }
     }
+    return next();
   } else {
     return next();
   }

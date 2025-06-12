@@ -16,9 +16,9 @@ import { computed } from "vue";
 const memberStore = useMemberStore();
 const members = computed(() => memberStore.members);
 
-function syncMembers() {
+const syncMembers = () => {
   memberStore.fetchMembers();
-}
+};
 </script>
 
 <template>

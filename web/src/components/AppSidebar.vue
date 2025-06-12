@@ -20,8 +20,10 @@ import {
   DocumentIcon,
   RectangleGroupIcon,
 } from "@heroicons/vue/24/outline";
+import { useAuthStore } from "@/stores/authStore";
 
 const route = useRoute();
+const authStore = useAuthStore();
 
 const adminMenu = [
   {
@@ -46,8 +48,9 @@ const adminMenu = [
   },
 ];
 
+// Gunakan logout dari authStore
 const handleLogout = () => {
-  localStorage.removeItem("token");
+  authStore.logout();
 };
 </script>
 
