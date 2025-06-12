@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { login } from "../controllers/authController.js";
+
 const router = Router();
 
-// Contoh endpoint
-router.post("/login", (req, res) => {
-  res.json({ message: "Login endpoint" });
-});
+router.post("/login", login);
 
 export default router;

@@ -45,6 +45,10 @@ const adminMenu = [
     url: "/dashboard/loans",
   },
 ];
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+};
 </script>
 
 <template>
@@ -75,8 +79,8 @@ const adminMenu = [
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
-            <RouterLink to="#">
+          <SidebarMenuButton asChild @click="handleLogout">
+            <RouterLink to="/">
               <ArrowLeftStartOnRectangleIcon />
               <span>Keluar</span>
             </RouterLink>
