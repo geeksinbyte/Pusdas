@@ -111,8 +111,25 @@ const onSubmit = handleSubmit(async (values) => {
         <FormMessage />
       </FormItem>
     </FormField>
-    <Button type="submit" class="w-full" :disabled="authStore.loading">
-      Masuk
+    <Button
+      type="submit"
+      class="w-full flex items-center justify-center gap-2"
+      :disabled="authStore.loading"
+    >
+      <svg
+        v-if="authStore.loading"
+        class="size-6 animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        />
+      </svg>
+      <span>{{ authStore.loading ? "Memproses..." : "Masuk" }}</span>
     </Button>
   </form>
 </template>

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Buku" ALTER COLUMN "urlFile" SET DATA TYPE VARCHAR(512);

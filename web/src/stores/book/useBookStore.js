@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { cacheBook, getCachedBook } from "@/db";
+import { cacheBook, getCachedBook, getCachedBookById } from "@/db";
 import axios from "axios";
 
 export const useBookStore = defineStore("book", () => {
@@ -40,5 +40,13 @@ export const useBookStore = defineStore("book", () => {
     }
   }
 
-  return { books, total, loading, setBooks, fetchBooks };
+  async function getBook(id) {
+    try {
+      const book = await getCachedBookById(id);
+      return book;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return { books, total, loading, setBooks, fetchBooks, getBook };
 });

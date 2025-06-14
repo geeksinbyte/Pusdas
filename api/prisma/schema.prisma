@@ -86,8 +86,8 @@ model Buku {
   jumlah          Int            @default(0)
   jumlahTersedia  Int            @default(0)
   format          FormatBuku     @default(hardcopy)
-  urlFile         String?        @db.VarChar(255)
-  urlSampul       String?        @db.VarChar(255)
+  urlFile         String?        @db.Text
+  urlSampul       String?        @db.Text
   tglInput        DateTime       @default(now())
   peminjaman      PeminjamanBuku[]
 }

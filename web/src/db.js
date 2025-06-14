@@ -51,6 +51,11 @@ export async function getCachedBook() {
   return db.getAll("book");
 }
 
+export async function getCachedBookById(id) {
+  const db = await initDB();
+  return db.get("book", id);
+}
+
 export async function cacheCategory(categories) {
   const db = await initDB();
   const tx = db.transaction("category", "readwrite");
