@@ -1,7 +1,7 @@
 <script setup>
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 import { useDeviceStore } from "@/stores/useDeviceStore";
-import LoginForm from "@/components/LoginForm.vue";
+import LoginForm from "./components/LoginForm.vue";
 import {
   Drawer,
   DrawerTrigger,

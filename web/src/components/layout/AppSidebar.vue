@@ -20,7 +20,7 @@ import {
   DocumentIcon,
   RectangleGroupIcon,
 } from "@heroicons/vue/24/outline";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 
 const route = useRoute();
 const authStore = useAuthStore();

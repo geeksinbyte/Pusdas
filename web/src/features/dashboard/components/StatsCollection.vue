@@ -1,7 +1,7 @@
 <script setup>
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpenIcon } from "@heroicons/vue/16/solid";
-import { useBookStore } from "@/stores/bookStore";
+import { useBookStore } from "@/stores/book/useBookStore";
 import { computed } from "vue";
 
 const bookStore = useBookStore();

@@ -5,7 +5,7 @@ import { vAutoAnimate } from "@formkit/auto-animate/vue";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 import { toast } from "vue-sonner";
 
 import {

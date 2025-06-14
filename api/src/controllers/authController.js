@@ -53,3 +53,26 @@ export async function login(req, res) {
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }
+
+/**
+ * Tambah anggota baru
+ */
+export async function register(req, res) {
+  const { nama, sandi, jenisKelamin, peran } = req.body;
+  try {
+    // Hash password sebelum disimpan
+    const hashedPassword = await bcrypt.hash(sandi, 10);
+    const newUser = await prisma.anggota.create({
+      data: {
+        nama,
+        sandi: hashedPassword,
+        jenisKelamin,
+        peran, // Pastikan value sesuai enum di schema
+      },
+    });
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error("Gagal menambah anggota:", error);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
+  }
+}

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import axios from "axios";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 
 const routes = [
   {
@@ -14,22 +13,23 @@ const routes = [
       {
         path: "",
         name: "DashboardLayout",
-        component: () => import("@/layouts/DashboardLayout.vue"),
+        component: () => import("@/features/dashboard/views/DashboardView.vue"),
       },
       {
         path: "collections",
         name: "Collections",
-        component: () => import("@/layouts/CollectionsLayout.vue"),
+        component: () =>
+          import("@/features/collections/views/CollectionsView.vue"),
       },
       {
         path: "users",
         name: "Users",
-        component: () => import("@/layouts/UsersLayout.vue"),
+        component: () => import("@/features/members/views/MembersView.vue"),
       },
       {
         path: "loans",
         name: "Loans",
-        component: () => import("@/layouts/LoansLayout.vue"),
+        component: () => import("@/features/loans/views/LoansView.vue"),
       },
     ],
   },

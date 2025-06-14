@@ -13,6 +13,7 @@ import "vue-sonner/style.css";
       leave-active-class="duration-500 ease-in-out"
       leave-from-class="opacity-100"
       leave-to-class="transform opacity-0"
+      mode="out-in"
     >
       <component :is="Component" />
     </transition>

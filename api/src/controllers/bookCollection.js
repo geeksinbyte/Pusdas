@@ -7,7 +7,7 @@ export async function getAllBooks(req, res) {
   try {
     const books = await prisma.buku.findMany();
     const total = await prisma.buku.count();
-    res.json({ total, books });
+    res.json(books);
   } catch (error) {
     console.error("Gagal mengambil data buku:", error);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });

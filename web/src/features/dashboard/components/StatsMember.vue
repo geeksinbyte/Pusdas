@@ -1,7 +1,7 @@
 <script setup>
 import { Card, CardContent } from "@/components/ui/card";
 import { UserGroupIcon } from "@heroicons/vue/16/solid";
-import { useMemberStore } from "@/stores/memberStore";
+import { useMemberStore } from "@/stores/member/useMemberStore";
 import { computed } from "vue";
 
 const memberStore = useMemberStore();

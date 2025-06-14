@@ -5,7 +5,13 @@ import axios from "axios";
 
 export const useAuthStore = defineStore("auth", () => {
   const token = ref(localStorage.getItem("token") || "");
-  const user = ref(null);
+
+  const user = ref({
+    id: "",
+    name: "",
+    role: "",
+  });
+
   const loading = ref(false);
   const error = ref(null);
   const baseURL = import.meta.env.VITE_API_URL;
@@ -22,7 +28,19 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   function setUser(data) {
-    user.value = data;
+    if (data) {
+      user.value = {
+        id: data.id || "",
+        name: data.nama || "",
+        role: data.peran || "",
+      };
+    } else {
+      user.value = {
+        id: "",
+        nama: "",
+        role: "",
+      };
+    }
   }
 
   async function login({ id, password }) {
@@ -35,10 +53,9 @@ export const useAuthStore = defineStore("auth", () => {
         password,
       });
       setToken(res.data.token);
-      setUser(res.data.anggota);
+      setUser(res.data.anggota); // Sesuaikan sesuai struktur API-mu
 
       router.push("/dashboard");
-
       return true;
     } catch (err) {
       error.value = err.response?.data?.error || "Login gagal";

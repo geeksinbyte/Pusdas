@@ -1,5 +1,4 @@
 import prisma from "../prisma.js";
-import bcrypt from "bcryptjs";
 
 /**
  * Ambil semua data anggota beserta totalnya
@@ -15,8 +14,7 @@ export async function getAllUsers(req, res) {
         tglDaftar: true,
       },
     });
-    const total = await prisma.anggota.count();
-    res.json({ total, users });
+    res.json(users);
   } catch (error) {
     console.error("Gagal mengambil data anggota:", error);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
@@ -45,29 +43,6 @@ export async function getUserById(req, res) {
     res.json(user);
   } catch (error) {
     console.error("Gagal mengambil detail anggota:", error);
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
-  }
-}
-
-/**
- * Tambah anggota baru
- */
-export async function createUser(req, res) {
-  const { nama, sandi, jenisKelamin, peran } = req.body;
-  try {
-    // Hash password sebelum disimpan
-    const hashedPassword = await bcrypt.hash(sandi, 10);
-    const newUser = await prisma.anggota.create({
-      data: {
-        nama,
-        sandi: hashedPassword,
-        jenisKelamin,
-        peran, // Pastikan value sesuai enum di schema
-      },
-    });
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error("Gagal menambah anggota:", error);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
   }
 }

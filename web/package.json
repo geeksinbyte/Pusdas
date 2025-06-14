@@ -19,6 +19,7 @@
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "idb": "^8.0.3",
     "lucide-vue-next": "^0.511.0",
     "pinia": "^3.0.3",
     "reka-ui": "^2.3.0",
@@ -43,6 +44,7 @@
   },
   "overrides": {
     "sharp": "0.32.6",
-    "sharp-ico": "0.1.5"
+    "sharp-ico": "0.1.5",
+    "tar-fs": "^2.1.3"
   }
 }
